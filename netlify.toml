@@ -11,6 +11,11 @@
 [build.environment]
   NODE_VERSION = "18"
   PYTHON_VERSION = "3.9"
+  PIP_USE_PEP517 = "true"
 
 [[plugins]]
-  package = "@netlify/plugin-python-core" 
+  package = "@netlify/plugin-python-core"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["numpy", "scikit-learn", "sentence-transformers", "spacy"] 
