@@ -18,7 +18,6 @@ function App() {
     maxDistance: 100,
     sortBy: 'rating'
   });
-  const [recentSearches, setRecentSearches] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
@@ -75,13 +74,6 @@ function App() {
       if (!response.ok) {
         throw new Error(data.error || 'Failed to fetch ski resorts');
       }
-
-      // Add to recent searches
-      setRecentSearches(prev => {
-        const newSearches = [query, ...prev.filter(s => s !== query)].slice(0, 5);
-        localStorage.setItem('recentSearches', JSON.stringify(newSearches));
-        return newSearches;
-      });
 
       setResorts(data);
     } catch (err) {
@@ -159,13 +151,7 @@ function App() {
                 placeholder="e.g., ski resorts near Denver or best resorts in Colorado"
                 className="search-input"
                 disabled={backendStatus !== 'connected'}
-                list="recent-searches"
               />
-              <datalist id="recent-searches">
-                {recentSearches.map((search, index) => (
-                  <option key={index} value={search} />
-                ))}
-              </datalist>
             </div>
             <button 
               type="submit" 
@@ -248,39 +234,14 @@ function App() {
             </div>
 
             <div className="resorts-grid">
-              {filteredResorts.map((resort, index) => (
-                <div
-                  key={index}
-                  className="resort-card card"
-                  onClick={() => handleResortClick(resort)}
-                  style={{
-                    animationDelay: `${index * 0.1}s`,
-                  }}
-                >
+              {filteredResorts.map((resort) => (
+                <div key={resort.place_id} className="resort-card" onClick={() => handleResortClick(resort)}>
                   <h2>{resort.name}</h2>
                   <p className="address">{resort.address}</p>
                   <div className="resort-details">
-                    <span className="rating">⭐ {resort.rating.toFixed(1)}</span>
-                    <span className="distance">📍 {resort.distance.toFixed(1)} km</span>
+                    <span>Rating: {resort.rating} ⭐</span>
+                    <span>Distance: {resort.distance.toFixed(1)} km</span>
                   </div>
-                  {resort.photo_ref && (
-                    <img
-                      src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${resort.photo_ref}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-                      alt={resort.name}
-                      className="resort-image"
-                    />
-                  )}
-                  {resort.website && (
-                    <a
-                      href={resort.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="website-link"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Visit Website
-                    </a>
-                  )}
                 </div>
               ))}
             </div>
@@ -290,45 +251,22 @@ function App() {
 
       {selectedResort && (
         <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="modal-close" onClick={handleCloseModal}>×</button>
             <h2>{selectedResort.name}</h2>
             <p className="address">{selectedResort.address}</p>
             <div className="resort-details">
-              <span className="rating">⭐ {selectedResort.rating.toFixed(1)}</span>
-              <span className="distance">📍 {selectedResort.distance.toFixed(1)} km</span>
+              <p>Rating: {selectedResort.rating} ⭐</p>
+              <p>Distance: {selectedResort.distance.toFixed(1)} km</p>
             </div>
-            {selectedResort.photo_ref && (
-              <img
-                src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${selectedResort.photo_ref}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-                alt={selectedResort.name}
-                className="modal-image"
-              />
-            )}
-            {selectedResort.reviews && selectedResort.reviews.length > 0 && (
-              <div className="reviews-section">
-                <h3>Recent Reviews</h3>
-                <div className="reviews-list">
-                  {selectedResort.reviews.slice(0, 3).map((review, index) => (
-                    <div key={index} className="review">
-                      <div className="review-rating">⭐ {review.rating}</div>
-                      <p className="review-text">{review.text}</p>
-                      <div className="review-author">- {review.author_name}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            {selectedResort.website && (
-              <a
-                href={selectedResort.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="website-link"
-              >
-                Visit Website
-              </a>
-            )}
+            <a
+              href={`https://www.google.com/maps/place/?q=place_id:${selectedResort.place_id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="website-link"
+            >
+              View on Google Maps
+            </a>
           </div>
         </div>
       )}
