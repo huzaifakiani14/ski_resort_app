@@ -27,7 +27,6 @@
   ],
   "env": {
     "FLASK_ENV": "production",
-    "PYTHONPATH": ".",
-    "GOOGLE_MAPS_API_KEY": "@google_maps_api_key"
+    "PYTHONPATH": "."
   }
 } 
