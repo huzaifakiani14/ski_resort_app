@@ -463,7 +463,7 @@ datalist {
   border-radius: 15px;
   backdrop-filter: blur(10px);
 }
-
+/*show filters button*/
 .btn-secondary {
   background: linear-gradient(45deg, #2c3e50, #34495e);
   color: white;
@@ -507,9 +507,9 @@ datalist {
   flex-direction: column;
   gap: 0.5rem;
 }
-
+/*filter text*/
 .filter-group label {
-  color: white;
+  color: black;
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -542,7 +542,7 @@ datalist {
   border-radius: 5px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.1);
-  color: white;
+  color: black;
   cursor: pointer;
   transition: all 0.3s ease;
 }
