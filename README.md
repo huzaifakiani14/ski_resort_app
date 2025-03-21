@@ -20,6 +20,12 @@ A modern web application that helps users find ski resorts based on location or 
 - Styling: CSS3 with animations
 - Natural Language Processing: spaCy, Sentence Transformers
 
+## Prerequisites
+
+- Python 3.8 or higher
+- Node.js and npm
+- Google Maps API key (with Places API enabled)
+
 ## Setup
 
 ### Backend Setup
@@ -40,9 +46,13 @@ A modern web application that helps users find ski resorts based on location or 
    pip install -r requirements.txt
    ```
 
-4. Create a .env file with your Google Maps API key:
-   ```
-   GOOGLE_MAPS_API_KEY=your_api_key_here
+4. Set up environment variables:
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+   
+   # Edit .env and add your Google Maps API key
+   # GOOGLE_MAPS_API_KEY=your_api_key_here
    ```
 
 5. Run the Flask server:
@@ -62,9 +72,13 @@ A modern web application that helps users find ski resorts based on location or 
    npm install
    ```
 
-3. Create a .env file with your Google Maps API key:
-   ```
-   REACT_APP_GOOGLE_MAPS_API_KEY=your_api_key_here
+3. Set up environment variables:
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+   
+   # Edit .env and add your Google Maps API key
+   # REACT_APP_GOOGLE_MAPS_API_KEY=your_api_key_here
    ```
 
 4. Start the development server:
@@ -79,6 +93,25 @@ A modern web application that helps users find ski resorts based on location or 
 3. Use the filters to refine your search results
 4. Click on a resort card to view more details
 5. Visit the resort's website directly from the application
+
+## Environment Variables
+
+The application requires two environment variables:
+
+1. Backend (`ski_resort_finder/.env`):
+   ```
+   GOOGLE_MAPS_API_KEY=your_api_key_here
+   ```
+
+2. Frontend (`ski-resort-frontend/.env`):
+   ```
+   REACT_APP_GOOGLE_MAPS_API_KEY=your_api_key_here
+   ```
+
+Make sure to:
+- Never commit your actual API keys to version control
+- Keep your API keys secure and don't share them publicly
+- Use different API keys for development and production environments
 
 ## Contributing
 
