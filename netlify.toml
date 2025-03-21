@@ -17,4 +17,8 @@
   package = "@netlify/plugin-python-core"
 
 [functions]
-  runtime = "python3.9" 
+  runtime = "python3.9"
+  included_files = ["ski_resort_finder/**/*"]
+
+[functions.api]
+  external_node_modules = ["numpy", "scikit-learn", "sentence-transformers", "spacy"] 

@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
-    "@netlify/plugin-python-core": "^1.0.0"
+    "@netlify/plugin-python-core": "^1.0.0",
+    "@netlify/build": "^28.0.0",
+    "@netlify/zip-it-and-ship-it": "^5.0.0"
+  },
+  "dependencies": {
+    "numpy": "^1.24.3",
+    "scikit-learn": "^1.3.0",
+    "sentence-transformers": "^2.2.2",
+    "spacy": "^3.7.2"
   }
 } 
