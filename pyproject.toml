@@ -6,10 +6,10 @@ build-backend = "setuptools.build_meta"
 name = "ski-resort-app"
 version = "1.0.0"
 description = "Ski Resort Finder Application"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Huzaifa Kiani <hkiani@umass.edu>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.10"
 flask = "^3.0.0"
 flask-cors = "^4.0.0"
 python-dotenv = "^1.0.0"

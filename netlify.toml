@@ -10,12 +10,14 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  PYTHON_VERSION = "3.9"
+  PYTHON_VERSION = "3.9.18"
   PIP_USE_PEP517 = "true"
+  PIP_CACHE_DIR = ".pip-cache"
 
 [[plugins]]
   package = "@netlify/plugin-python-core"
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["numpy", "scikit-learn", "sentence-transformers", "spacy"] 
+  external_node_modules = ["numpy", "scikit-learn", "sentence-transformers", "spacy"]
+  runtime = "python3.9" 
