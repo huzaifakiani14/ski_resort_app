@@ -9,4 +9,5 @@ sentence-transformers==2.2.2
 spacy==3.7.2
 torch==2.0.0
 transformers==4.30.0
+requests==2.31.0
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1.tar.gz 
