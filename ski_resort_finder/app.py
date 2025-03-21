@@ -9,7 +9,19 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+# Configure CORS to handle both development and production
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "http://localhost:3000",  # Development
+            "http://localhost:5000",  # Development
+            "https://*.vercel.app",   # Vercel preview deployments
+            "https://ski-resort-app.vercel.app"  # Production
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 # Initialize SkiResortFinder with Google Maps API key
 api_key = os.getenv('GOOGLE_MAPS_API_KEY')

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '/api'  // This will be proxied to the backend in production
+  : 'http://localhost:5001';  // Development URL
+
 function App() {
   const [query, setQuery] = useState('');
   const [resorts, setResorts] = useState([]);
@@ -21,7 +25,7 @@ function App() {
     // Check backend connection
     const checkBackendConnection = async () => {
       try {
-        const response = await fetch('http://localhost:5001/test');
+        const response = await fetch(`${API_BASE_URL}/test`);
         if (response.ok) {
           setBackendStatus('connected');
         } else {
@@ -58,7 +62,7 @@ function App() {
     setSelectedResort(null);
 
     try {
-      const response = await fetch('http://localhost:5001/search', {
+      const response = await fetch(`${API_BASE_URL}/search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
