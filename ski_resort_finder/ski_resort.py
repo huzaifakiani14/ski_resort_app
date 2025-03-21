@@ -9,13 +9,22 @@ from sklearn.metrics.pairwise import cosine_similarity
 from geopy.distance import geodesic
 from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor
+import subprocess
 
 class SkiResortFinder:
     def __init__(self, api_key, model_name='paraphrase-distilroberta-base-v1', max_distance_km=100):
         load_dotenv()
         self.API_KEY = api_key
         self.model = SentenceTransformer(model_name)
-        self.nlp = spacy.load("en_core_web_trf")
+        
+        # Install spaCy model if not already installed
+        try:
+            self.nlp = spacy.load("en_core_web_sm")
+        except OSError:
+            print("Downloading spaCy model...")
+            subprocess.check_call(["python", "-m", "spacy", "download", "en_core_web_sm"])
+            self.nlp = spacy.load("en_core_web_sm")
+            
         self.max_distance_km = max_distance_km
         
         # Known major ski resorts by state

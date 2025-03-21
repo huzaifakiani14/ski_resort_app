@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api'  // This will be proxied to the backend in production
+  ? ''  // In production, use relative paths
   : 'http://localhost:5001';  // Development URL
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
     const checkBackendConnection = async () => {
       try {
         setBackendStatus('checking');
-        const response = await fetch('/api/test');
+        const response = await fetch(`${API_BASE_URL}/api/test`);
         if (response.ok) {
           setBackendStatus('connected');
         } else {
@@ -62,7 +62,7 @@ function App() {
     setSelectedResort(null);
 
     try {
-      const response = await fetch('/api/search', {
+      const response = await fetch(`${API_BASE_URL}/api/search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
