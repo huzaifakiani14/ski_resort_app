@@ -1,10 +1,5 @@
 {
   "name": "ski-resort-app",
   "version": "1.0.0",
-  "private": true,
-  "devDependencies": {
-    "@netlify/plugin-python-core": "^1.0.0",
-    "@netlify/build": "^28.0.0",
-    "@netlify/zip-it-and-ship-it": "^5.0.0"
-  }
+  "private": true
 } 
