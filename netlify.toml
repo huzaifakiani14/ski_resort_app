@@ -1,0 +1,16 @@
+[build]
+  command = "cd ski-resort-frontend && npm install && npm run build"
+  publish = "ski-resort-frontend/build"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "18"
+  PYTHON_VERSION = "3.9"
+
+[[plugins]]
+  package = "@netlify/plugin-python-core" 

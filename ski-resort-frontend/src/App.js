@@ -25,16 +25,16 @@ function App() {
     // Check backend connection
     const checkBackendConnection = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/test`);
+        setBackendStatus('checking');
+        const response = await fetch('/api/test');
         if (response.ok) {
           setBackendStatus('connected');
         } else {
           setBackendStatus('error');
-          setError('Backend server is not responding correctly');
         }
-      } catch (err) {
+      } catch (error) {
+        console.error('Backend connection error:', error);
         setBackendStatus('error');
-        setError('Cannot connect to backend server. Please make sure the server is running.');
       }
     };
 
@@ -62,7 +62,7 @@ function App() {
     setSelectedResort(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/search`, {
+      const response = await fetch('/api/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
