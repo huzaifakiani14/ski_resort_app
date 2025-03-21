@@ -12,9 +12,6 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "devDependencies": {
-    "@netlify/plugin-python-core": "^1.0.0"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false react-scripts build",
