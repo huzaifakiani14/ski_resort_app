@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+// Set API base URL based on environment
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '' // Empty string for relative paths in production
+  : 'http://localhost:5001';
+
 function App() {
   const [query, setQuery] = useState('');
   const [resorts, setResorts] = useState([]);
@@ -20,18 +25,31 @@ function App() {
   useEffect(() => {
     // Check backend connection
     const checkBackendConnection = async () => {
-      try {
-        const response = await fetch('http://localhost:5001/test');
-        if (response.ok) {
-          setBackendStatus('connected');
-        } else {
-          setBackendStatus('error');
-          setError('Backend server is not responding correctly');
+      setBackendStatus('checking');
+      // Try multiple endpoint patterns
+      const endpoints = [
+        `${API_BASE_URL}/api/test`,  // New API format
+        `${API_BASE_URL}/test`       // Legacy format
+      ];
+      
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`Trying to connect to backend at: ${endpoint}`);
+          const response = await fetch(endpoint);
+          if (response.ok) {
+            console.log(`Successfully connected to backend at: ${endpoint}`);
+            setBackendStatus('connected');
+            return; // Exit on success
+          }
+        } catch (err) {
+          console.error(`Failed to connect to ${endpoint}:`, err);
+          // Continue to next endpoint
         }
-      } catch (err) {
-        setBackendStatus('error');
-        setError('Cannot connect to backend server. Please make sure the server is running.');
       }
+      
+      // If we get here, all endpoints failed
+      setBackendStatus('error');
+      setError('Cannot connect to backend server. Please make sure the server is running.');
     };
 
     checkBackendConnection();
@@ -57,35 +75,53 @@ function App() {
     setResorts([]);
     setSelectedResort(null);
 
-    try {
-      const response = await fetch('http://localhost:5001/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query }),
-      });
+    // Try multiple endpoint patterns
+    const endpoints = [
+      `${API_BASE_URL}/api/search`,  // New API format
+      `${API_BASE_URL}/search`       // Legacy format
+    ];
 
-      const data = await response.json();
+    let success = false;
+    
+    for (const endpoint of endpoints) {
+      try {
+        console.log(`Trying to search using endpoint: ${endpoint}`);
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query }),
+        });
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to fetch ski resorts');
+        const data = await response.json();
+
+        if (!response.ok) {
+          console.error(`Error from ${endpoint}:`, data.error);
+          continue; // Try next endpoint
+        }
+
+        // Add to recent searches
+        setRecentSearches(prev => {
+          const newSearches = [query, ...prev.filter(s => s !== query)].slice(0, 5);
+          localStorage.setItem('recentSearches', JSON.stringify(newSearches));
+          return newSearches;
+        });
+
+        setResorts(data);
+        success = true;
+        break; // Exit on success
+      } catch (err) {
+        console.error(`Search error with ${endpoint}:`, err);
+        // Continue to next endpoint
       }
-
-      // Add to recent searches
-      setRecentSearches(prev => {
-        const newSearches = [query, ...prev.filter(s => s !== query)].slice(0, 5);
-        localStorage.setItem('recentSearches', JSON.stringify(newSearches));
-        return newSearches;
-      });
-
-      setResorts(data);
-    } catch (err) {
-      setError(err.message);
-      console.error('Search error:', err);
-    } finally {
-      setLoading(false);
     }
+
+    if (!success) {
+      setError('Failed to fetch ski resorts. Please try again later.');
+    }
+    
+    setLoading(false);
   };
 
   const handleResortClick = (resort) => {
