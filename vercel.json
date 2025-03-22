@@ -7,25 +7,9 @@
       "config": {
         "distDir": "build"
       }
-    },
-    {
-      "src": "ski_resort_finder/app.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "python3.9"
-      }
     }
   ],
   "routes": [
-    {
-      "src": "/api/test",
-      "dest": "ski_resort_finder/app.py"
-    },
-    {
-      "src": "/api/search",
-      "dest": "ski_resort_finder/app.py"
-    },
     {
       "handle": "filesystem"
     },
@@ -36,6 +20,6 @@
   ],
   "env": {
     "FLASK_ENV": "production",
-    "PYTHONPATH": "."
+    "NODE_VERSION": "18.x"
   }
 } 

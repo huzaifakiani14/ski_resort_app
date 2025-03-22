@@ -15,7 +15,15 @@ class SkiResortFinder:
         load_dotenv()
         self.API_KEY = api_key
         self.model = SentenceTransformer(model_name)
-        self.nlp = spacy.load("en_core_web_trf")
+        
+        # Use a smaller spaCy model that's easier to deploy
+        try:
+            self.nlp = spacy.load('en_core_web_sm')
+        except:
+            # If the model isn't available, download a small one
+            spacy.cli.download('en_core_web_sm')
+            self.nlp = spacy.load('en_core_web_sm')
+            
         self.max_distance_km = max_distance_km
         
         # Known major ski resorts by state
