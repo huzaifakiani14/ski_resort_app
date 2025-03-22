@@ -6,11 +6,87 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+// Mock data for demonstration when backend is unavailable
+const MOCK_DATA = {
+  "vermont": [
+    {
+      "name": "Killington Resort",
+      "address": "3861 Killington Road, Killington, VT 05751",
+      "rating": 4.6,
+      "lat": 43.6548,
+      "lng": -72.7933,
+      "place_id": "mock-id-1",
+      "distance": 5.2
+    },
+    {
+      "name": "Stowe Mountain Resort",
+      "address": "7412 Mountain Road, Stowe, VT 05672",
+      "rating": 4.8,
+      "lat": 44.5303,
+      "lng": -72.7814,
+      "place_id": "mock-id-2",
+      "distance": 8.1
+    },
+    {
+      "name": "Mount Snow",
+      "address": "39 Mount Snow Road, West Dover, VT 05356",
+      "rating": 4.5,
+      "lat": 42.9602,
+      "lng": -72.9204,
+      "place_id": "mock-id-3",
+      "distance": 12.7
+    }
+  ],
+  "new hampshire": [
+    {
+      "name": "Loon Mountain",
+      "address": "60 Loon Mountain Road, Lincoln, NH 03251",
+      "rating": 4.7,
+      "lat": 44.0360,
+      "lng": -71.6214,
+      "place_id": "mock-id-4",
+      "distance": 4.3
+    },
+    {
+      "name": "Bretton Woods",
+      "address": "99 Ski Area Road, Bretton Woods, NH 03575",
+      "rating": 4.6,
+      "lat": 44.2544,
+      "lng": -71.4415,
+      "place_id": "mock-id-5",
+      "distance": 7.8
+    }
+  ],
+  "maine": [
+    {
+      "name": "Sunday River",
+      "address": "15 South Ridge Road, Newry, ME 04261",
+      "rating": 4.7,
+      "lat": 44.4734,
+      "lng": -70.8570,
+      "place_id": "mock-id-6",
+      "distance": 6.2
+    },
+    {
+      "name": "Sugarloaf",
+      "address": "5092 Access Road, Carrabassett Valley, ME 04947",
+      "rating": 4.8,
+      "lat": 45.0334,
+      "lng": -70.3133,
+      "place_id": "mock-id-7",
+      "distance": 9.1
+    }
+  ]
+};
+
 // Set API base URL based on environment
 // In production, use relative paths; in development, use localhost with port
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
   ? '' // Empty string for relative paths in production
   : 'http://localhost:5001';
+
+// Flag to use mock data in case backend is unavailable
+const USE_MOCK_DATA = true;
 
 function App() {
   // State variables
@@ -60,7 +136,7 @@ function App() {
       
       // If we get here, all endpoints failed
       setBackendStatus('error');
-      setError('Cannot connect to backend server. Please make sure the server is running.');
+      setError('Cannot connect to backend server. Using demo data for demonstration.');
     };
 
     checkBackendConnection();
@@ -213,18 +289,24 @@ function App() {
       {/* Hero section with title and search form */}
       <header className="hero">
         <div className="hero-content">
-          <h1>Find Your Perfect Ski Resort</h1>
-          <p>Search for ski resorts by location or description</p>
+          <h1>Ski Resort Finder</h1>
+          <p>Discover the perfect powder near you!</p>
           
           {/* Backend connection status indicators */}
           {backendStatus === 'checking' && (
             <div className="backend-status checking">
-              Checking backend connection...
+              Checking connection to our backend service...
             </div>
           )}
           {backendStatus === 'error' && (
             <div className="backend-status error">
-              Backend connection error. Please check if the server is running.
+              Backend unavailable. Using demo data for demonstration.
+            </div>
+          )}
+          
+          {backendStatus === 'demo' && (
+            <div className="backend-status demo">
+              Demo mode: Using sample data for demonstration purposes.
             </div>
           )}
           
@@ -235,9 +317,9 @@ function App() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="e.g., ski resorts near Denver or best resorts in Colorado"
+                placeholder="Enter location (e.g., 'Vermont ski resorts')"
                 className="search-input"
-                disabled={backendStatus !== 'connected'}
+                disabled={backendStatus === 'checking'}
                 list="recent-searches"
               />
               {/* Datalist for recent searches autocomplete */}
@@ -251,7 +333,7 @@ function App() {
             <button 
               type="submit" 
               className="btn btn-primary"
-              disabled={backendStatus !== 'connected'}
+              disabled={backendStatus === 'checking' || !query.trim()}
             >
               Search
             </button>
