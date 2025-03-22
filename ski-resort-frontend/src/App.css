@@ -459,9 +459,10 @@ datalist {
 .filters-section {
   margin: 2rem 0;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 15px;
   backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn-secondary {
@@ -486,9 +487,10 @@ datalist {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
   animation: slideDown 0.3s ease-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 @keyframes slideDown {
@@ -509,7 +511,7 @@ datalist {
 }
 
 .filter-group label {
-  color: white;
+  color: #000000;
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -517,10 +519,11 @@ datalist {
 .filter-group input[type="range"] {
   width: 100%;
   height: 6px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   outline: none;
   -webkit-appearance: none;
+  margin: 10px 0;
 }
 
 .filter-group input[type="range"]::-webkit-slider-thumb {
@@ -531,6 +534,8 @@ datalist {
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .filter-group input[type="range"]::-webkit-slider-thumb:hover {
@@ -540,15 +545,15 @@ datalist {
 .filter-group select {
   padding: 0.5rem;
   border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.8);
+  color: #000000;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .filter-group select:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .filter-group select:focus {
