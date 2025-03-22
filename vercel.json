@@ -1,10 +1,38 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "ski-resort-frontend/build",
-  "rewrites": [
-    { "source": "/api/test", "destination": "ski_resort_finder/app.py" },
-    { "source": "/api/search", "destination": "ski_resort_finder/app.py" }
+  "builds": [
+    {
+      "src": "ski-resort-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    },
+    {
+      "src": "ski_resort_finder/app.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.9"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/test",
+      "dest": "ski_resort_finder/app.py"
+    },
+    {
+      "src": "/api/search",
+      "dest": "ski_resort_finder/app.py"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "ski-resort-frontend/build/$1"
+    }
   ],
   "env": {
     "FLASK_ENV": "production",
