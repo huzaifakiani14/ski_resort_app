@@ -424,12 +424,6 @@
   border: 1px solid rgba(244, 67, 54, 0.3);
 }
 
-.backend-status.demo {
-  background: rgba(76, 175, 80, 0.2);
-  color: #43a047;
-  border: 1px solid rgba(76, 175, 80, 0.3);
-}
-
 /* Disabled state styles */
 .search-input:disabled,
 .btn-primary:disabled {
