@@ -113,6 +113,13 @@ function App() {
     // Check backend connection
     const checkBackendConnection = async () => {
       setBackendStatus('checking');
+      
+      if (USE_MOCK_DATA) {
+        console.log('Using mock data for demonstration');
+        setBackendStatus('demo');
+        return;
+      }
+      
       // Try multiple endpoint patterns
       const endpoints = [
         `${API_BASE_URL}/api/test`,  // New API format
@@ -172,6 +179,38 @@ function App() {
     setResorts([]);
     setSelectedResort(null);
 
+    // Add to recent searches
+    setRecentSearches(prev => {
+      const newSearches = [query, ...prev.filter(s => s !== query)].slice(0, 5);
+      localStorage.setItem('recentSearches', JSON.stringify(newSearches));
+      return newSearches;
+    });
+
+    // If using mock data or backend is unavailable
+    if (USE_MOCK_DATA || backendStatus === 'demo' || backendStatus === 'error') {
+      setTimeout(() => {
+        const queryLower = query.toLowerCase();
+        let mockResults = [];
+        
+        // Check if query contains any known location
+        for (const [location, locationResorts] of Object.entries(MOCK_DATA)) {
+          if (queryLower.includes(location)) {
+            mockResults = locationResorts;
+            break;
+          }
+        }
+        
+        // If no specific location found, return Vermont resorts by default
+        if (mockResults.length === 0 && queryLower.includes('ski')) {
+          mockResults = MOCK_DATA.vermont;
+        }
+        
+        setResorts(mockResults);
+        setLoading(false);
+      }, 1000);  // Simulate API delay
+      return;
+    }
+
     // Try multiple endpoint patterns
     const endpoints = [
       `${API_BASE_URL}/api/search`,  // New API format
@@ -197,13 +236,6 @@ function App() {
           console.error(`Error from ${endpoint}:`, data.error);
           continue; // Try next endpoint
         }
-
-        // Add to recent searches
-        setRecentSearches(prev => {
-          const newSearches = [query, ...prev.filter(s => s !== query)].slice(0, 5);
-          localStorage.setItem('recentSearches', JSON.stringify(newSearches));
-          return newSearches;
-        });
 
         setResorts(data);
         success = true;
