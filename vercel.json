@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "ski-resort-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "ski-resort-frontend/build/$1"
+    }
+  ],
+  "env": {
+    "FLASK_ENV": "production",
+    "NODE_VERSION": "18.x"
+  }
+} 

@@ -1,0 +1,17 @@
+{
+  "name": "ski-resort-app",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "ski-resort-frontend"
+  ],
+  "scripts": {
+    "start": "cd ski-resort-frontend && npm start",
+    "build": "cd ski-resort-frontend && npm install && npm run build",
+    "test": "cd ski-resort-frontend && npm test"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "nodeVersion": "18.x"
+} 
