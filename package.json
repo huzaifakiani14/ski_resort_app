@@ -1,0 +1,17 @@
+{
+  "name": "ski-resort-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd ski-resort-frontend && npm install && npm run build",
+    "start": "cd ski-resort-frontend && npm start",
+    "dev": "concurrently \"cd ski_resort_finder && python app.py\" \"cd ski-resort-frontend && npm start\""
+  },
+  "engines": {
+    "node": "18.x",
+    "python": "3.9"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
